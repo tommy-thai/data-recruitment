@@ -8,6 +8,7 @@ con = snowflake.connector.connect(
     account='QI42254.eu-west-2.aws',
     role='XXXX',
     database='XXXX',
+    warehouse='compute_wh',
     session_parameters={
         'QUERY_TAG': 'data-recruitment',
     }

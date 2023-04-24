@@ -25,3 +25,22 @@ The dataset is in CSV format and contains the following fields:
 5. Export the results of each query to a CSV file using Python.
 6. Include answers to the following questions in your README:
    * If we had supplier_address as a column, how would you create a pipeline to extract the postcodes as another column (supplier_postcode) in the dataset?
+### Instructions:
+* Fork this GitHub repository to your personal account.
+* Write the Python code to load the data into Snowflake, perform the SQL queries, and export the results to CSV files. You will need to create the objects you need inside your Snowflake database - see instructions for connecting to Snowflake below.
+* Commit and push your changes to your branch.
+* Create a pull request to merge your changes into the main branch of this repository.
+* Include a README file with instructions on how to run your code and any relevant information about your solution (e.g. include how you have created the schema and tables you are using, if you experienced any issues with the exercise and how you resolved them, etc)
+### Connecting to Snowflake
+* You will receive a username and password with these instructions
+* Login to Snowflake [here](https://gpgjpce-sy56198.snowflakecomputing.com/console/login) - you will be prompted to change your password
+* You will be able to see a database with your name on - you have full access to this database.
+### Evaluation:
+Your solution will be evaluated based on the following criteria:
+* Correctness of the SQL queries.
+* Use of Python best practices.
+* Efficiency of the code.
+* Quality and clarity of the README file.
+### Useful docs:
+* [Snowflake copy into examples](https://docs.snowflake.com/en/sql-reference/sql/copy-into-table#examples)
+* [Snowflake copy options](https://docs.snowflake.com/en/sql-reference/sql/copy-into-table#copy-options-copyoptions)

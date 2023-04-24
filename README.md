@@ -2,7 +2,7 @@
 ## Exercise Description:
 You are provided with a dataset containing NHS spending information. Your task is to use Python to load this data into Snowflake, perform some SQL queries on it, and export the results to a CSV file.
 ### Dataset:
-This is an open source dataset, which can be found here. It contains spending details from 2010 to 2020 by Salisbury NHS Foundation Trust.
+This is an open source dataset, which can be found [here](https://www.kaggle.com/datasets/deepaktejasvisingh/expenditure-in-the-salisbury-nhs-v2). It contains spending details from 2010 to 2020 by Salisbury NHS Foundation Trust.
 The dataset is in CSV format and contains the following fields:
 * Department Family: cleansed to a single value for our specific dataset(Department of Health).
 * Entity: cleansed to a single value for our specific dataset (Salisbury NHS Foundation Trust).

@@ -33,7 +33,7 @@ The dataset is in CSV format and contains the following fields:
 * Include a README file with instructions on how to run your code and any relevant information about your solution (e.g. include how you have created the schema and tables you are using, if you experienced any issues with the exercise and how you resolved them, etc)
 ### Connecting to Snowflake
 * You will receive a username and password via email
-* Login to Snowflake [here](https://gpgjpce-sy56198.snowflakecomputing.com/console/login) - you will be prompted to change your password
+* Login to Snowflake [here](https://rvktngg-iu56961.snowflakecomputing.com/console/login) - you will be prompted to change your password
 * You will be able to see a database with your name on - you have full access to this database.
 ### Evaluation:
 Your solution will be evaluated based on the following criteria:

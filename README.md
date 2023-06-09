@@ -1,46 +1,59 @@
 # Technical exercise
-## Exercise Description:
-You are provided with a dataset containing NHS spending information. Your task is to use Python to load this data into Snowflake, perform some SQL queries on it, and export the results to a CSV file.
-### Dataset:
-This is an open source dataset, which can be found [here](https://www.kaggle.com/datasets/deepaktejasvisingh/expenditure-in-the-salisbury-nhs-v2). It contains spending details from 2010 to 2020 by Salisbury NHS Foundation Trust.
-The dataset is in CSV format and contains the following fields:
-* Department Family: cleansed to a single value for our specific dataset(Department of Health).
-* Entity: cleansed to a single value for our specific dataset (Salisbury NHS Foundation Trust).
-* Date: date of expenditure.
-* Expense Type: category the expense falls under.
-* Expense Area: area the expense falls under.
-* Supplier: provider of the service or product.
-* Transaction Number: transaction identifier (note that more than one line of spending can be included in the same transaction).
-* Expenditure: money spent.
-### Requirements:
-1. Use Python to connect to the Snowflake database.
-2. Create a Snowflake database and schema for this exercise.
-3. Load the data from the CSV file into Snowflake using Python.
-4. Write SQL queries to answer the following questions:
-   * How many transactions are in the dataset?
-   * What is the average yearly spend for Salisbury NHS Foundation Trust?
-   * Who are the top 3 Suppliers by spend in 2018?
-   * Which Expense Area has the highest spend overall?
-   * How many suppliers are in the dataset?
-5. Export the results of each query to a CSV file using Python.
-6. Include answers to the following questions in your README:
-   * If we had supplier_address as a column, how would you create a pipeline to extract the postcodes as another column (supplier_postcode) in the dataset?
 ### Instructions:
-* Fork this GitHub repository to your personal account.
-* Write the Python code to load the data into Snowflake, perform the SQL queries, and export the results to CSV files. You will need to create the objects you need inside your Snowflake database - see instructions for connecting to Snowflake below.
-* Commit and push your changes to your branch.
-* Create a pull request to merge your changes into the main branch of this repository.
-* Include a README file with instructions on how to run your code and any relevant information about your solution (e.g. include how you have created the schema and tables you are using, if you experienced any issues with the exercise and how you resolved them, etc)
-### Connecting to Snowflake
-* You will receive a username and password via email
-* Login to Snowflake [here](https://rvktngg-iu56961.snowflakecomputing.com/console/login) - you will be prompted to change your password
-* You will be able to see a database with your name on - you have full access to this database.
-### Evaluation:
-Your solution will be evaluated based on the following criteria:
-* Correctness of the SQL queries.
-* Use of Python best practices.
-* Efficiency of the code.
-* Quality and clarity of the README file.
-### Useful docs:
-* [Snowflake copy into examples](https://docs.snowflake.com/en/sql-reference/sql/copy-into-table#examples)
-* [Snowflake copy options](https://docs.snowflake.com/en/sql-reference/sql/copy-into-table#copy-options-copyoptions)
+The current version of the code is incomplete. A finalised version is to be runnable as a standalone script.
+### Challenges preventing completion in good time:
+* poor time management around the below blockers.
+* 2 explored paths for loading the data failed.
+   1. Using the native Snowflake connector `snowflake-connector-python`. I encountered a `MissingDependencyError` despite installing the dependency to the environment `pip install "snowflake-connector-python[pandas]"`
+   2. Using sqlalchemy. I encountered an anonymous exception.
+* I did finally overcome this with the final path I explored where I `PUT` the file on a created `STAGE`.
+### Intended process to finalise:
+1. Identified a formatting issue in column 'Expenditure' where a '£' sign is present. I plan to address this by cleaning this in my python code. An alternative is to switch to a ELT pipeline and load the data as is, handling the transformations within Snowflake instead.
+2. Once I have confirmed all the data has loaded without errors, I would write and test SQL queries within the web Snowsight IDE (taking advantage of the intellisense) before migrating to python. My SQL queries would something like, I would alternatively use CTEs or subqueries instead of `LIMIT`:
+   * How many transactions are in the dataset?
+```
+SELECT count(DISTINCT transaction_number)
+FROM TOMMYTHAI.TEST3.TEST_TABLE
+;
+```
+   * What is the average yearly spend for Salisbury NHS Foundation Trust?
+```
+SELECT 
+    year(date) as year,
+    sum(expenditure) as year_spend,
+    avg(sum(expenditure)) over () as yearly_avg
+FROM TOMMYTHAI.TEST3.TEST_TABLE
+WHERE entity = 'Salisbury NHS Foundation Trust'
+GROUP BY year
+;
+```
+   * Who are the top 3 Suppliers by spend in 2018?
+```
+SELECT 
+    supplier,
+    sum(expenditure) as spend
+FROM TOMMYTHAI.TEST3.TEST_TABLE
+WHERE year(date) = 2018
+GROUP BY supplier
+ORDER BY spend DESC
+LIMIT 3
+;
+```
+   * Which Expense Area has the highest spend overall?
+```
+SELECT 
+    expense_area,
+    sum(expenditure) as spend
+FROM TOMMYTHAI.TEST3.TEST_TABLE
+GROUP BY expense_area
+ORDER BY spend DESC
+LIMIT 1
+;
+```
+   * How many suppliers are in the dataset?
+```
+SELECT count(DISTINCT supplier)
+FROM TOMMYTHAI.TEST3.TEST_TABLE
+;
+```
+3. For Requirement #6 I would assume this column is added after the inital pipeline is built. If this is the case, I would use SQL to `ALTER` the table to add the new column. If the data becomes available historically I would `UPDATE` the records, otherwise I would update the pipeline to `INSERT INTO` with the new column once the column becomes available.
